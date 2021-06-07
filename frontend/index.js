@@ -9,6 +9,7 @@ import 'vuetify/dist/vuetify.min.css'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueMask from 'v-mask'
+import Axios from 'axios'
 
 //Components
 import router from './router'
@@ -27,6 +28,11 @@ import { mapGetters, mapActions } from 'vuex';
 
 Vue.config.silent = process.env.NODE_ENV !== 'development';
 Vue.config.devtools = process.env.NODE_ENV === 'development';
+Vue.prototype.$http = Axios;
+const token = localStorage.getItem('token');
+if (token) {
+    Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+}
 
 //Registration
 
