@@ -192,11 +192,11 @@
                   </td>
                 </tr>
                 <tr>
-                  <td><router-link to="/respondent">Игры</router-link></td>
-                  <td><router-link to="/respondent/respondent-personal-data-edit">Образование</router-link></td>
-                  <td><router-link to="/respondent/forms">Политика</router-link></td>
-                  <td><router-link to="/respondent/history">Спорт</router-link></td>
-                  <td><router-link to="/respondent/respondent-profile">Настольные игры</router-link></td>
+                  <td><v-btn text @click="updateNews('Игры')">Игры</v-btn></td>
+                  <td><v-btn text @click="updateNews('Образование')">Образование</v-btn></td>
+                  <td><v-btn text @click="updateNews('Политика')">Политика</v-btn></td>
+                  <td><v-btn text @click="updateNews('Спорт')">Спорт</v-btn></td>
+                  <td><v-btn text @click="updateNews('Настольные игры')">Настольные игры</v-btn></td>
                 </tr>
               </tbody>
               </table>
@@ -206,7 +206,7 @@
             <div class="content-wrapper">
                 <div class="container">
                     <div class="row">
-                          <input type="text" placeholder="Поиск по заголовку" class="search">
+                          <input type="text" placeholder="Поиск по заголовку" class="search" v-model="searchField" @change="updateNews()">
                     </div>
                     <label></label>
                     <div class="preloader">
@@ -244,8 +244,12 @@
                                         <div class="row mt-5"> 
                                           <div class="col">
                                             <v-card-actions>
+                                              <span>Рейтинг новости: {{ news.rate }}</span>
+                                              <b-link class="ml-1" style="color:green" @click="changeRate('+', news._id)">↑</b-link>
+                                              <b-link class="ml-1" style="color:red" @click="changeRate('-', news._id)">↓</b-link>
                                             <v-spacer></v-spacer>
-                                            <v-btn
+                                            
+                                            <v-btn :id="news._id"
                                               text
                                               @click="comments = !comments"
                                             >
@@ -263,9 +267,6 @@
                         </div>
                       </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -308,6 +309,10 @@
         // Transition name
           name: ''
         },
+
+        searchField: '',
+
+        theme: "Игры",
       }),
       computed: {
 
@@ -338,24 +343,35 @@
       },
 
       methods:{
-        async updateNews(){
-          const response = await axios.get('/api/find-news/');
+        async updateNews(theme){
+          if (theme)
+            this.theme = theme;
+          let data = {
+            header: this.searchField,
+            theme: this.theme
+          };
+          const response = await axios.post('/api/find-news/',data);
           this.allNews = response.data;
           this.visibleNews = _.clone(this.allNews);
-          console.log(response);
+          // console.log(response);
 
           this.isBusy = false;
         },
 
-        changeRate(){
+        async changeRate(indicator,id){
+            let data = {
+              indicator: indicator,
+              id: id,
+            };
+            await axios.post('/api/change-rate/',data);
+            this.updateNews();
+        },
+
+        async showComments(){
 
         },
 
-        showComments(){
-
-        },
-
-        commentNews(){
+        async commentNews(){
 
         },
 
@@ -380,8 +396,8 @@
           .catch(err => console.log(err));
         },
 
-        logout(){
-
+        async logout(){
+            await axios.get('/api/logout/');
         },
 
       restoreCurrentPage() { //восстановление страницы на которой находился пользователь (пагинация)

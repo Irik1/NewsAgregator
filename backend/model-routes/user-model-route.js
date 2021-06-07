@@ -3,7 +3,7 @@ module.exports = function(app) {
     const userModelController = require('../model-controllers/user-model-controller.js');
  
     // Вывести все новости
-    app.get('/api/find-news', userModelController.findNews);
+    app.post('/api/find-news', userModelController.findNews);
 
     // Регистрация
     app.post('/api/register', userModelController.register);
@@ -21,7 +21,7 @@ module.exports = function(app) {
     app.post('/api/comment-news', userModelController.commentNews);
 
     // Изменить рейтинг новости
-    app.put('/api/change-rate', userModelController.changeRate);
+    app.post('/api/change-rate/', userModelController.changeRate);
 
     
 

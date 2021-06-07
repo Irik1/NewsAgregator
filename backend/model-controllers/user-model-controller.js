@@ -1,6 +1,7 @@
 // // const User = db.models.User;
 // const bcrypt = require('bcryptjs');
 const mongo = require('mongodb').MongoClient;
+const mon = require('mongodb');
 
  
 exports.register = async (req, res) => {
@@ -25,6 +26,8 @@ exports.updateUser = async (req, res) => {
  
 exports.findNews = async (req, res) => {
     try {
+        let theme = req.body.theme;
+        let header = req.body.header;
         const url = "mongodb://localhost:27017/";
         const mongoClient = new mongo(url, { useUnifiedTopology: true });
         let data = [];
@@ -33,10 +36,18 @@ exports.findNews = async (req, res) => {
             const db = client.db("NewsAgregator");
             const collection = db.collection("News");
             if(err) return console.log(err);
-            collection.find({theme:"Игры"}).toArray(function(err, res){         
-                data = res;
-                result.json(data);   
-            });    
+            if (header == ''){
+                collection.find({theme:theme}).toArray(function(err, res){         
+                    data = res;
+                    result.json(data);   
+                });  
+            }
+            else {
+                collection.find({header: new RegExp(header,"i")}).toArray(function(err, res){         
+                    data = res;
+                    result.json(data);
+                });  
+            }
         });
     } catch (err) {
         console.log(err);
@@ -51,7 +62,27 @@ exports.commentNews = async (req, res) => {
 };
 
 exports.changeRate = async (req, res) => {
-
+    const url = "mongodb://localhost:27017/";
+    const mongoClient = new mongo(url, { useUnifiedTopology: true });
+    let operation = req.body.indicator;
+    let newsId = req.body.id;
+    let result = res;
+    mongoClient.connect(function(err, client){
+        const db = client.db("NewsAgregator");
+        const collection = db.collection("News");
+        let query; let rate;
+        collection.findOne({_id: new mon.ObjectID(newsId)},function(err,res){
+            rate = res.rate;
+            if (operation == "+")
+                rate = rate+1;
+            else
+                rate = rate-1;
+            collection.updateOne({_id: new mon.ObjectID(newsId)},{$set: {rate: rate}},function(err,res){
+                if (err) throw err;
+                result.json("OK");
+            });
+        });
+    });
 };
  
 // exports.publicNews = async (req, res) => {
