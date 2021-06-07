@@ -1,6 +1,7 @@
 <template>
     <div class="news">
-
+        <div data-app>
+        </div>
         <div class="wrapper">
             <header style="background-color: #32BAEC;">
             </header>
@@ -10,8 +11,157 @@
               <tbody>
                 <tr>
                   <th rowspan="2"><img class="img-fluid logo" src="../assets/shared/images/logo.png" /></th>
-                  <td colspan="4">Краткая информация о пользователе</td>
-                  <td><router-link to="/home">Вход/Регистрация/Выход</router-link></td>
+                  <td colspan="4">
+                    <!-- Личный кабинет -->
+                    <!-- Если пользователь авторизован -->
+                    <div v-if="1">
+                      <v-dialog v-model="settings" fullscreen hide-overlay transition="dialog-bottom-transition">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            v-bind="attrs"
+                            v-on="on"
+                            text
+                          >
+                            Личный кабинет
+                          </v-btn>
+                        </template>
+                        <v-card>
+                          <v-toolbar dark color="primary">
+                            <v-btn icon dark @click="settings = false">
+                              <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                            <v-toolbar-title>Личный кабинет</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-toolbar-items>
+                              <v-btn dark text @click="settings = false">Сохранить настройки</v-btn>
+                            </v-toolbar-items>
+                          </v-toolbar>
+                          <v-list three-line subheader>
+                            <v-subheader>Основные данные</v-subheader>
+                            <v-list-item>
+                              <v-list-item-content>
+                                <v-list-item-title>Никнейм</v-list-item-title>
+                                <!-- <v-list-item-subtitle>Set the content filtering level to restrict apps that can be downloaded</v-list-item-subtitle> -->
+                              </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item>
+                              <v-list-item-content>
+                                <v-list-item-title>Логин</v-list-item-title>
+                                <!-- <v-list-item-subtitle>Require password for purchase or use password to restrict purchase</v-list-item-subtitle> -->
+                              </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item>
+                              <v-list-item-content>
+                                <v-list-item-title>Пароль</v-list-item-title>
+                                <!-- <v-list-item-subtitle>Require password for purchase or use password to restrict purchase</v-list-item-subtitle> -->
+                              </v-list-item-content>
+                            </v-list-item>
+                          </v-list>
+                          <v-divider></v-divider>
+                          <v-list three-line subheader>
+                            <v-subheader>Настройки отображения новостей</v-subheader>
+                            <v-list-item>
+                              <v-list-item-action>
+                                <v-checkbox v-model="notifications"></v-checkbox>
+                              </v-list-item-action>
+                              <v-list-item-content>
+                                <v-list-item-title>Обновлять новости в реальном времени (может нагрузить память компьютера)</v-list-item-title>
+                                <!-- <v-list-item-subtitle>Notify me about updates to apps or games that I downloaded</v-list-item-subtitle> -->
+                              </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item>
+                              <v-list-item-action>
+                                <v-checkbox v-model="sound"></v-checkbox>
+                              </v-list-item-action>
+                              <v-list-item-content>
+                                <v-list-item-title>Выводить записи с отрицательным рейтингом</v-list-item-title>
+                                <!-- <v-list-item-subtitle>Auto-update apps at any time. Data charges may apply</v-list-item-subtitle> -->
+                              </v-list-item-content>
+                            </v-list-item>
+                          </v-list>
+                        </v-card>
+                      </v-dialog>
+                  </div>                   
+                  <div v-else>
+                    Авторизуйтесь, чтобы тут появился личный кабинет!
+                  </div>
+
+                  </td>
+                  <td>
+                    <div v-if="1">
+                      <v-row justify="center">
+                        <v-dialog v-model="dialog" persistent max-width="600px">
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              v-bind="attrs"
+                              v-on="on"
+                              text
+                            >
+                              Авторизация
+                            </v-btn>
+                          </template>
+                          <v-card>
+                            <v-card-title>
+                              <span class="headline">Введите логин и пароль, чтобы войти в систему</span>
+                            </v-card-title>
+                            <v-card-text>
+                              <v-container>
+                                <v-col cols="12">
+                                  <v-text-field label="Логин" required></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12">
+                                  <v-text-field label="Пароль" type="password" required></v-text-field>
+                                </v-col>
+                              </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                text
+                                @click="register = !register"
+                              >
+                                Регистрация
+                              </v-btn>
+                              <v-btn color="blue darken-1" text @click="dialog = false">Назад</v-btn>
+                              <v-btn color="blue darken-1" text @click="dialog = false">Войти</v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+
+                        <v-dialog v-model="register" persistent max-width="600px">
+                          <v-card>
+                            <v-card-title>
+                              <span class="headline">Регистрация</span>
+                            </v-card-title>
+                            <v-card-text>
+                              <v-container>
+                                <v-col cols="12">
+                                  <v-text-field label="Логин" required></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12">
+                                  <v-text-field label="Пароль" type="password" required></v-text-field>
+                                </v-col>
+                              </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn color="blue darken-1" text @click="register = false">Назад</v-btn>
+                              <v-btn color="blue darken-1" text @click="register = false">Создать аккаунт</v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+                      </v-row>
+                    </div>
+                    <div v-else>
+                          <v-btn
+                            v-bind="attrs"
+                            v-on="on"
+                            text
+                          >
+                            Выйти из аккаунта
+                          </v-btn>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td><router-link to="/respondent">Игры</router-link></td>
@@ -28,16 +178,7 @@
             <div class="content-wrapper">
                 <div class="container">
                     <div class="row">
-                          <!-- <div class="col-md-2">
-                                Список
-                          </div>
-                          <div class="col-md-2">
-                                Блок
-                          </div> -->
-                          <input type="text" placeholder="Заголовок новости" class="search">
-                          <!-- <div class="com-md-12">
-
-                          </div> -->
+                          <input type="text" placeholder="Поиск по заголовку" class="search">
                     </div>
                     <label></label>
                     <div class="preloader">
@@ -72,13 +213,19 @@
                                       <div class="col-md-9">
                                         <span class="card-title">{{ news.header }}</span>
                                         
-                                        <div class="row mt-4"> 
+                                        <div class="row mt-5"> 
                                           <div class="col">
-                                            <a>
-                                              <span class="card-title">Перейти к обсуждению</span>
-                                            </a>
+                                            <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                              text
+                                              @click="register = !register"
+                                            >
+                                              Перейти к обсуждению новости
+                                            </v-btn>
                                             <div class="ya-share2" data-curtain data-shape="round" data-services="vkontakte,facebook,telegram,twitter"
                                             :data-title="news.header" :data-url="news.link" :data-image="news.image" data-lang="ru"></div>
+                                            </v-card-actions>
                                           </div>
                                         </div>
                                       </div>
@@ -86,45 +233,6 @@
                                   </div>
                                 </div>
                         </div>
-
-                        <!-- <div>
-                            <b-table table-class='tableFilingNews'
-                                    ref="tableFilingNews"
-                                    style="white-space: pre-wrap"
-                                    hover bordered small
-                                    :tbody-tr-class="'text-center'"
-                                    :thead-class="'text-center thead_background'"
-                                    :select-mode="'single'"
-                                    :busy="isBusy"
-                                    :items="allNews"
-                                    :fields="items"
-                                    :selected-variant="''"
-                                    :per-page="perPage"
-                                    :current-page="currentPage"
-                                    primary-key="_id">
-                                <template #cell(index)="row">
-                                    {{ row.index + (perPage*(currentPage-1)) +1 }}
-                                </template>
-                                <template #table-busy>
-                                    <div class="text-center text-danger my-2">
-                                        <b-spinner class="align-middle"></b-spinner>
-                                        <strong>{{messageBusy}}</strong>
-                                    </div>
-                                </template>
-                            </b-table>
-                            <div v-if="totalRows > perPage || !(currentPage = 1)" class="row justify-content-between mt-3">
-                                <div class="col-md-auto">
-                                    <b-pagination v-model="currentPage"
-                                                  :total-rows="totalRows" :per-page="perPage"
-                                                  first-text="Первая"
-                                                  prev-text="Назад"
-                                                  next-text="Вперед"
-                                                  last-text="Последняя">
-                                    </b-pagination>
-                                </div>
-
-                            </div>
-                        </div> -->
                       </div>
                     </div>
 
@@ -147,6 +255,12 @@
     export default {
       title: 'Новостной агрегатор Rubik',
         data: () => ({
+        dialog: false,
+        settings: false,
+        register:false,
+        notifications: false,
+        sound: true,
+        widgets: false,
         // Дата хранится в виде числа. Не обязательно в state компонента. Но и в других местах тоже
         date: 1580558031264,
         allNews: [],
@@ -220,19 +334,15 @@
 
         },
 
-        register(){
+        // register(){
 
-        },
+        // },
 
         auth(){
 
         },
 
         exit(){
-
-        },
-
-        socialNetworkPublish(){
 
         },
 

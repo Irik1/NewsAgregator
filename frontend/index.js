@@ -4,6 +4,8 @@ import 'intersection-observer';
 
 //Libs
 import Vue from 'vue';
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueMask from 'v-mask'
@@ -35,6 +37,7 @@ Vue.use(BootstrapVue, {
 Vue.use(VueSweetalert2);
 Vue.use(IconsPlugin);
 Vue.use(VueMask);
+Vue.use(Vuetify);
 Vue.component('multiselect', Multiselect)
 
 //Components
@@ -45,6 +48,7 @@ import index from 'views-folder/index.vue'
 
 new Vue({
     el: "#app",
+    vuetify: new Vuetify(),
     router,
     store,
     methods: {
