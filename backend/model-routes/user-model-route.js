@@ -11,8 +11,8 @@ module.exports = function(app) {
     // Авторизация
     app.post('/api/auth', userModelController.auth);
 
-    // Смена пароля
-    app.put('/api/change-password', userModelController.changepassword);
+    // Вывести все новости
+    app.get('/api/show-comments/:newsId', userModelController.showComments);
 
     // Обновить настройки пользователя
     app.put('/api/update-user', userModelController.updateUser);
@@ -23,7 +23,7 @@ module.exports = function(app) {
     // Изменить рейтинг новости
     app.post('/api/change-rate/', userModelController.changeRate);
 
-    
+    app.del('/api/logout/', userModelController.logout)
 
 
 //     // Update a User with Id

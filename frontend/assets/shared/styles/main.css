@@ -663,3 +663,14 @@ label.required:after
     align-items: center;
     margin: auto;
 }
+
+.selfComment {
+    text-align: right;
+    justify-content: end;
+}
+
+.selfAuthor{
+    text-align: right;
+    justify-content: end;
+}
+
