@@ -1,1 +1,2 @@
-Клиентская часть дипломного проекта. Представляет собой веб-сайт на vue.js, выводящий новости и позволяющий их комментировать.
+
+The client part of the graduation project. Represents a website in vue.js that displays news and allows you to comment on them.
